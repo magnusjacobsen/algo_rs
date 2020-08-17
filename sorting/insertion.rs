@@ -15,8 +15,6 @@
 
     -- always sorts in-place
 */
-use std::cmp::Ord;
-
 pub fn sort<T: Ord>(a: &mut [T]) {
     let n = a.len();
     for i in 1..n {
