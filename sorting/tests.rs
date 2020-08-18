@@ -3,6 +3,9 @@ mod selection;
 mod mergesort;
 mod shellsort;
 mod radix;
+mod quicksort;
+mod util;
+
 use std::io::Result;
 
 pub mod tests {
@@ -139,7 +142,16 @@ pub mod tests {
     pub fn test_quicksort() -> Result<()> {
         let mut a = get_unsorted_vec();
         let b = get_sorted_vec();
-        shellsort::sort(&mut a);
+        quicksort::sort(&mut a, false);
+        assert_eq!(a, b);
+        Ok(())
+    }
+
+    #[test]
+    pub fn test_quick_3_way() -> Result<()> {
+        let mut a = get_unsorted_vec();
+        let b = get_sorted_vec();
+        quicksort::sort(&mut a, true);
         assert_eq!(a, b);
         Ok(())
     }

@@ -4,6 +4,7 @@ struct Mulberry32 {
 
 // https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript/47593316#47593316
 // https://gist.github.com/tommyettinger/46a874533244883189143505d203312c
+#[allow(dead_code)]
 impl Mulberry32 {
     pub fn new() -> Self {
         let seed = 1337 ^ 0xDEADBEEF;
