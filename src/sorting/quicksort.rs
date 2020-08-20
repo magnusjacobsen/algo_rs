@@ -65,8 +65,13 @@ fn quick_3_way<T: PartialOrd + Clone>(a: &mut [T], lo: usize, hi: usize) {
                 i += 1;
             } 
         } // now a[lo..lt-1] < v; a[lt..gt] == v; a[gt+1..hi] > v
-        quick_3_way(a, lo, lt - 1);
-        quick_3_way(a, gt + 1, hi);
+        
+        if lt > 0 {
+            quick_3_way(a, lo, lt - 1);        
+        }
+        if gt < hi {
+            quick_3_way(a, gt + 1, hi);
+        }
     }
 }
 
