@@ -1,15 +1,7 @@
-mod insertion;
-mod selection;
-mod mergesort;
-mod shellsort;
-mod radix;
-mod quicksort;
-mod util;
-
-use std::io::Result;
-
-pub mod tests {
-    use super::*;
+#[cfg(test)]
+pub mod test {
+    use crate::sorting::{insertion, mergesort, selection, shellsort, radix, quicksort};
+    use std::io::Result;
 
     fn get_unsorted_vec() -> Vec<i32> {
         vec![1,2,3,0,-1,4,-2]
