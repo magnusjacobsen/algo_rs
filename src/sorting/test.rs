@@ -97,6 +97,7 @@ pub mod test {
     #[test]
     pub fn test_merge_bottom_up() -> Result<()> {
         let mut a = get_unsorted_vec();
+        println!("og: {:?}", a);
         let b = get_sorted_vec();
         mergesort::sort(&mut a, false);
         assert_eq!(a, b);

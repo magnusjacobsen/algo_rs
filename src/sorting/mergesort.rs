@@ -13,10 +13,9 @@
     --> page 270-273
 */
 pub fn sort<T: Ord + Default + Clone + Copy>(a: &mut [T], top_down: bool) {
-    let n = a.len();
-    let mut aux: Vec<T> = vec![Default::default(); n];
+    let mut aux: Vec<T> = vec![Default::default(); a.len()];
     if top_down {
-        sort_top_down(a, &mut aux, 0, n - 1);
+        sort_top_down(a, &mut aux);
     } else {
         sort_bottom_up(a, &mut aux);
     }
@@ -28,48 +27,51 @@ fn sort_bottom_up<T: Ord + Copy>(a: &mut [T], aux: &mut [T]) {
     while sz < n {
         let mut lo = 0;
         while lo < n - sz {
-            merge(a, aux, lo, lo + sz - 1, 
-                std::cmp::min(lo + sz + sz - 1, n - 1));
+            let hi = std::cmp::min(lo + sz + sz, n);
+            merge(&mut a[lo..hi], &mut aux[lo..hi], sz - 1);
             lo = lo + sz + sz;
         }
         sz = sz + sz;
     }
 }
 
-fn sort_top_down<T: Ord + Copy>(a: &mut [T], aux: &mut [T], lo: usize, hi: usize) {
+fn sort_top_down<T: Ord + Copy>(a: &mut [T], aux: &mut [T]) {
+    let n = a.len() - 1;
     // first sort a[lo .. hi]
-    if hi > lo {
-        let mid = lo + (hi - lo) / 2;
+    if n > 0 {
+        let mid = n / 2;
         // sort left half
-        sort_top_down(a, aux, lo, mid);
+        sort_top_down(&mut a[..mid + 1], &mut aux[..mid + 1]);
         // sort right half
-        sort_top_down(a, aux, mid + 1, hi);
+        sort_top_down(&mut a[mid + 1..], &mut aux[mid + 1..]);
         // merge the two halfs
-        merge(a, aux, lo, mid, hi);
+
+        merge(a, aux, mid);
     }
 }
 
-fn merge<T: Ord + Copy>(a: &mut [T], aux: &mut [T], lo: usize, mid: usize, hi: usize) {
+fn merge<T: Ord + Copy>(a: &mut [T], aux: &mut [T], mid: usize) {
+    let hi = a.len();
     // tracks current index for left part
-    let mut i = lo;
+    let mut i = 0;
     // tracks current index for right part
     let mut j = mid + 1;
 
     // tracks index where to place next sorted item
-    let mut k = lo;
+    let mut k = 0;
     // copy a[a .. hi] to aux[lo ... hi]
-    while k <= hi {
+    while k < hi {
         aux[k] = a[k];
         k += 1;
     }
 
     // merge back to a[lo .. hi]
-    k = lo;
-    while k <= hi {
+    k = 0;
+    while k < hi {
         if i > mid {
             a[k] = aux[j];
             j += 1;
-        } else if j > hi {
+        } else if j >= hi {
             a[k] = aux[i];
             i += 1;
         } else if aux[j] < aux[i] {

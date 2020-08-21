@@ -20,23 +20,20 @@
 use crate::util;
 
 pub fn sort<T: PartialOrd + Clone>(a: &mut [T], use_3_way: bool) {
-    let n = a.len();
     util::shuffle(a);
     if use_3_way {
-        quick_3_way(a, 0, n - 1);
+        quick_3_way(a);
     } else {
-        rec_sort(a, 0, n - 1);
+        rec_sort(a);
     }
 }
 
-fn rec_sort<T: PartialOrd + Clone>(a: &mut [T], lo: usize, hi: usize) {
-    if hi > lo {
-        let j = partition(a, lo, hi);
-        if j > 0 {
-            rec_sort(a, lo, j - 1);
-        }
-        if j < hi {
-            rec_sort(a, j + 1, hi);
+fn rec_sort<T: PartialOrd + Clone>(a: &mut [T]) {
+    if a.len() > 1 {
+        let j = partition(a);
+        if true {
+            rec_sort(&mut a[..j]);
+            rec_sort(&mut a[j + 1..]);
         }
     }
 }
@@ -47,12 +44,12 @@ fn rec_sort<T: PartialOrd + Clone>(a: &mut [T], lo: usize, hi: usize) {
         Adapted from Algorithms, 4th edition, by Robert Sedgewick & Kevin Wayne
     --> page 299    
     */
-fn quick_3_way<T: PartialOrd + Clone>(a: &mut [T], lo: usize, hi: usize) {
-    if hi > lo {
-        let mut lt = lo;
-        let mut i = lo + 1;
-        let mut gt = hi;
-        let v = a[lo].clone();// partitioning item
+fn quick_3_way<T: PartialOrd + Clone>(a: &mut [T]) {
+    if a.len() > 1 {
+        let mut lt = 0;
+        let mut i = 1;
+        let mut gt = a.len() - 1;
+        let v = a[0].clone();// partitioning item
         while i <= gt {
             if a[i] < v { 
                 a.swap(lt, i);
@@ -65,21 +62,20 @@ fn quick_3_way<T: PartialOrd + Clone>(a: &mut [T], lo: usize, hi: usize) {
                 i += 1;
             } 
         } // now a[lo..lt-1] < v; a[lt..gt] == v; a[gt+1..hi] > v
-        
-        if lt > 0 {
-            quick_3_way(a, lo, lt - 1);        
-        }
-        if gt < hi {
-            quick_3_way(a, gt + 1, hi);
-        }
+        quick_3_way(&mut a[..lt]);        
+        quick_3_way(&mut a[gt + 1..]);
     }
 }
 
-fn partition<T: PartialOrd + Clone>(a: &mut [T], lo: usize, hi: usize) -> usize {
+fn partition<T: PartialOrd + Clone>(a: &mut [T]) -> usize {
+    if a.len() == 0 {
+        return 0;
+    }
+    let hi = a.len() - 1;
     // left and right scan indexii
-    let mut i = lo + 1;
+    let mut i = 1;
     let mut j = hi;
-    let v = a[lo].clone(); // partitioning item
+    let v = a[0].clone(); // partitioning item
     loop {
         while a[i] < v { // scan right
             i += 1;
@@ -89,7 +85,7 @@ fn partition<T: PartialOrd + Clone>(a: &mut [T], lo: usize, hi: usize) -> usize 
         }
         while v < a[j] { // scan left
             j -= 1;
-            if j <= lo {
+            if j <= 0 {
                 break;
             }
         }
@@ -99,6 +95,6 @@ fn partition<T: PartialOrd + Clone>(a: &mut [T], lo: usize, hi: usize) -> usize 
         // exchange
         a.swap(i, j);
     }
-    a.swap(lo, j);
+    a.swap(0, j);
     j
 }
