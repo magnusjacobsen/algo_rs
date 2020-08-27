@@ -38,3 +38,22 @@ pub fn get_index<T: Eq + PartialOrd>(key: T, a: &[T]) -> Option<usize> {
 pub fn key_is_present<T: Eq + PartialOrd>(key: T, a: &[T]) -> bool {
     get_index(key, a).is_some()
 }
+
+/*
+    Exponential search
+
+    not sure if there is an indexable stream-ish collection type for rust, 
+    so I'm just using a Vec, where I could obviously get the length as a constant operation...
+*/
+pub fn exponential_search<T: Eq + PartialOrd>(key: T, a: &[T]) -> Option<usize> {
+    let mut i = 0;
+    loop {
+        if a[i] == key {
+            return Some(i);
+        } else if a[i] < key {
+            return get_index(key, &a[..i + 1]);
+        } else {
+            i = if i == 0 { 1 } else { i * 2 };
+        }
+    }
+}
