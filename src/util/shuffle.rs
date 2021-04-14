@@ -16,8 +16,7 @@ pub struct Mulberry32 {
 #[allow(dead_code)]
 impl Mulberry32 {
     pub fn new() -> Self {
-        let seed = 1337 ^ 0xDEADBEEF;
-        Mulberry32 {a: seed}
+        Mulberry32 {a: 1337 ^ 0xDEADBEEF}
     }
 
     pub fn with_seed(seed: u32) -> Self {
