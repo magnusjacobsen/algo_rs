@@ -1,7 +1,7 @@
 #[cfg(test)]
 pub mod test {
-    use crate::util;
     use std::io::Result;
+    use crate::util;
 
     #[test]
     pub fn binary_search_index() -> Result<()> {
@@ -32,7 +32,7 @@ pub mod test {
     /// checking that the shuffle doesn't bias too much certain positions
     /// the cutoff is no more than 1/3 of the average in either way
     fn shuffle_distribution_small_sample() -> Result<()> {
-        let mut rng = util::shuffle::Mulberry32::new();
+        let mut rng = util::rng::Mulberry32::new();
         let n = 10;
         let samples = 1000;
         let mut cnt = vec![vec![0;n];n];

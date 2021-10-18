@@ -1,8 +1,10 @@
 #[cfg(test)]
-pub mod test {
+pub mod t {
     use crate::sorting::{insertion, mergesort, selection, shellsort, radix, quicksort};
     use crate::util;
     use std::io::Result;
+    extern crate test;
+    use test::Bencher;
 
     fn get_unsorted_vec() -> Vec<i32> {
         vec![1,2,3,0,-1,4,-2]
@@ -240,5 +242,294 @@ pub mod test {
         quicksort::sort(&mut a, true);
         assert_eq!(a, b);
         Ok(())
+    }
+
+    /*
+        Les go benching
+    */
+    
+    /*
+        Small sorted
+    */
+    #[bench]
+    pub fn small_sorted_insertion(b: &mut Bencher) {
+        let a = get_sorted_vec();
+        b.iter(|| insertion::sort(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn small_sorted_mergesort_top_down(b: &mut Bencher) {
+        let a = get_sorted_vec();
+        b.iter(|| mergesort::sort(&mut a.clone(), true));
+    }
+
+    #[bench]
+    pub fn small_sorted_mergesort_bottom_up(b: &mut Bencher) {
+        let a = get_sorted_vec();
+        b.iter(|| mergesort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn small_sorted_quicksort(b: &mut Bencher) {
+        let a = get_sorted_vec();
+        b.iter(|| quicksort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn small_sorted_quicksort_3_way(b: &mut Bencher) {
+        let a = get_sorted_vec();
+        b.iter(|| quicksort::sort(&mut a.clone(), true));
+    }
+
+    #[bench]
+    pub fn small_sorted_radix_signed(b: &mut Bencher) {
+        let a = get_sorted_vec();
+        b.iter(|| radix::sort_signed(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn small_sorted_radix_unsigned(b: &mut Bencher) {
+        let a: Vec<u32> = get_sorted_vec().iter().map(|x| *x as u32).collect();
+        b.iter(|| radix::sort_unsigned(&mut a.clone()));
+    }
+    
+    #[bench]
+    pub fn small_sorted_selection(b: &mut Bencher) {
+        let a = get_sorted_vec();
+        b.iter(|| selection::sort(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn small_sorted_shellsort(b: &mut Bencher) {
+        let a = get_sorted_vec();
+        b.iter(|| shellsort::sort(&mut a.clone()));
+    }
+
+    /*
+        Small unsorted
+    */
+    #[bench]
+    pub fn small_unsorted_insertion(b: &mut Bencher) {
+        let a = get_unsorted_vec();
+        b.iter(|| insertion::sort(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn small_unsorted_mergesort_top_down(b: &mut Bencher) {
+        let a = get_unsorted_vec();
+        b.iter(|| mergesort::sort(&mut a.clone(), true));
+    }
+
+    #[bench]
+    pub fn small_unsorted_mergesort_bottom_up(b: &mut Bencher) {
+        let a = get_unsorted_vec();
+        b.iter(|| mergesort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn small_unsorted_quicksort(b: &mut Bencher) {
+        let a = get_unsorted_vec();
+        b.iter(|| quicksort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn small_unsorted_quicksort_3_way(b: &mut Bencher) {
+        let a = get_unsorted_vec();
+        b.iter(|| quicksort::sort(&mut a.clone(), true));
+    }
+
+    #[bench]
+    pub fn small_unsorted_radix_signed(b: &mut Bencher) {
+        let a = get_unsorted_vec();
+        b.iter(|| radix::sort_signed(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn small_unsorted_radix_unsigned(b: &mut Bencher) {
+        let a: Vec<u32> = get_unsorted_vec().iter().map(|x| *x as u32).collect();
+        b.iter(|| radix::sort_unsigned(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn small_unsorted_selection(b: &mut Bencher) {
+        let a = get_unsorted_vec();
+        b.iter(|| selection::sort(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn small_unsorted_shellsort(b: &mut Bencher) {
+        let a = get_unsorted_vec();
+        b.iter(|| shellsort::sort(&mut a.clone()));
+    }
+
+    /*
+        Large sorted
+    */
+    #[bench]
+    pub fn large_sorted_insertion(b: &mut Bencher) {
+        let a = get_sorted_vec_large();
+        b.iter(|| insertion::sort(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_sorted_mergesort_top_down(b: &mut Bencher) {
+        let a = get_sorted_vec_large();
+        b.iter(|| mergesort::sort(&mut a.clone(), true));
+    }
+
+    #[bench]
+    pub fn large_sorted_mergesort_bottom_up(b: &mut Bencher) {
+        let a = get_sorted_vec_large();
+        b.iter(|| mergesort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn large_sorted_quicksort(b: &mut Bencher) {
+        let a = get_sorted_vec_large();
+        b.iter(|| quicksort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn large_sorted_quicksort_3_way(b: &mut Bencher) {
+        let a = get_sorted_vec_large();
+        b.iter(|| quicksort::sort(&mut a.clone(), true));
+    }
+
+    #[bench]
+    pub fn large_sorted_radix_signed(b: &mut Bencher) {
+        let a = get_sorted_vec_large();
+        b.iter(|| radix::sort_signed(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_sorted_radix_unsigned(b: &mut Bencher) {
+        let a: Vec<u32> = get_sorted_vec_large().iter().map(|x| *x as u32).collect();
+        b.iter(|| radix::sort_unsigned(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_sorted_selection(b: &mut Bencher) {
+        let a = get_sorted_vec_large();
+        b.iter(|| selection::sort(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_sorted_shellsort(b: &mut Bencher) {
+        let a = get_sorted_vec_large();
+        b.iter(|| shellsort::sort(&mut a.clone()));
+    }
+
+/*
+        Large reverse sorted
+    */
+    #[bench]
+    pub fn large_reverse_sorted_insertion(b: &mut Bencher) {
+        let a: Vec<i32> = get_sorted_vec_large().iter().rev().map(|x| *x).collect();
+        b.iter(|| insertion::sort(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_reverse_sorted_mergesort_top_down(b: &mut Bencher) {
+        let a: Vec<i32> = get_sorted_vec_large().iter().rev().map(|x| *x).collect();
+        b.iter(|| mergesort::sort(&mut a.clone(), true));
+    }
+
+    #[bench]
+    pub fn large_reverse_sorted_mergesort_bottom_up(b: &mut Bencher) {
+        let a: Vec<i32> = get_sorted_vec_large().iter().rev().map(|x| *x).collect();
+        b.iter(|| mergesort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn large_reverse_sorted_quicksort(b: &mut Bencher) {
+        let a: Vec<i32> = get_sorted_vec_large().iter().rev().map(|x| *x).collect();
+        b.iter(|| quicksort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn large_reverse_sorted_quicksort_3_way(b: &mut Bencher) {
+        let a: Vec<i32> = get_sorted_vec_large().iter().rev().map(|x| *x).collect();
+        b.iter(|| quicksort::sort(&mut a.clone(), true));
+    }
+
+    #[bench]
+    pub fn large_reverse_sorted_radix_signed(b: &mut Bencher) {
+        let a: Vec<i32> = get_sorted_vec_large().iter().rev().map(|x| *x).collect();
+        b.iter(|| radix::sort_signed(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_reverse_sorted_radix_unsigned(b: &mut Bencher) {
+        let a: Vec<u32> = get_sorted_vec_large().iter().rev().map(|x| *x as u32).collect();
+        b.iter(|| radix::sort_unsigned(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_reverse_sorted_selection(b: &mut Bencher) {
+        let a: Vec<i32> = get_sorted_vec_large().iter().rev().map(|x| *x).collect();
+        b.iter(|| selection::sort(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_reverse_sorted_shellsort(b: &mut Bencher) {
+        let a: Vec<i32> = get_sorted_vec_large().iter().rev().map(|x| *x).collect();
+        b.iter(|| shellsort::sort(&mut a.clone()));
+    }
+
+    /*
+        Large unsorted
+    */
+    #[bench]
+    pub fn large_unsorted_insertion(b: &mut Bencher) {
+        let a = get_unsorted_vec_large();
+        b.iter(|| insertion::sort(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_unsorted_mergesort_top_down(b: &mut Bencher) {
+        let a = get_unsorted_vec_large();
+        b.iter(|| mergesort::sort(&mut a.clone(), true));
+    }
+
+    #[bench]
+    pub fn large_unsorted_mergesort_bottom_up(b: &mut Bencher) {
+        let a = get_unsorted_vec_large();
+        b.iter(|| mergesort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn large_unsorted_quicksort(b: &mut Bencher) {
+        let a = get_unsorted_vec_large();
+        b.iter(|| quicksort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn large_unsorted_quicksort_3_way(b: &mut Bencher) {
+        let a = get_unsorted_vec_large();
+        b.iter(|| quicksort::sort(&mut a.clone(), true));
+    }
+
+    #[bench]
+    pub fn large_unsorted_radix_signed(b: &mut Bencher) {
+        let a = get_unsorted_vec_large();
+        b.iter(|| radix::sort_signed(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_unsorted_radix_unsigned(b: &mut Bencher) {
+        let a: Vec<u32> = get_unsorted_vec_large().iter().map(|x| *x as u32).collect();
+        b.iter(|| radix::sort_unsigned(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_unsorted_selection(b: &mut Bencher) {
+        let a = get_unsorted_vec_large();
+        b.iter(|| selection::sort(&mut a.clone()));
+    }
+
+    #[bench]
+    pub fn large_unsorted_shellsort(b: &mut Bencher) {
+        let a = get_unsorted_vec_large();
+        b.iter(|| shellsort::sort(&mut a.clone()));
     }
 }
