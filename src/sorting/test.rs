@@ -116,6 +116,15 @@ pub mod t {
     }
 
     #[test]
+    pub fn test_merge_bottom_up_with_insertion_large() -> Result<()> {
+        let mut a = get_unsorted_vec_large();
+        let b = get_sorted_vec_large();
+        mergesort::sort_bottom_up_with_insertion(&mut a);
+        assert_eq!(a, b);
+        Ok(())
+    }
+
+    #[test]
     pub fn test_shellsort() -> Result<()> {
         let mut a = get_unsorted_vec();
         let b = get_sorted_vec();
@@ -270,6 +279,12 @@ pub mod t {
     }
 
     #[bench]
+    pub fn small_sorted_mergesort_bottom_up_with_insertion(b: &mut Bencher) {
+        let a = get_sorted_vec();
+        b.iter(|| mergesort::sort_bottom_up_with_insertion(&mut a.clone()));
+    }
+
+    #[bench]
     pub fn small_sorted_quicksort(b: &mut Bencher) {
         let a = get_sorted_vec();
         b.iter(|| quicksort::sort(&mut a.clone(), false));
@@ -324,6 +339,12 @@ pub mod t {
     pub fn small_unsorted_mergesort_bottom_up(b: &mut Bencher) {
         let a = get_unsorted_vec();
         b.iter(|| mergesort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn small_unsorted_mergesort_bottom_up_with_insertion(b: &mut Bencher) {
+        let a = get_unsorted_vec();
+        b.iter(|| mergesort::sort_bottom_up_with_insertion(&mut a.clone()));
     }
 
     #[bench]
@@ -384,6 +405,12 @@ pub mod t {
     }
 
     #[bench]
+    pub fn large_sorted_mergesort_bottom_up_with_insertion(b: &mut Bencher) {
+        let a = get_sorted_vec_large();
+        b.iter(|| mergesort::sort_bottom_up_with_insertion(&mut a.clone()));
+    }
+
+    #[bench]
     pub fn large_sorted_quicksort(b: &mut Bencher) {
         let a = get_sorted_vec_large();
         b.iter(|| quicksort::sort(&mut a.clone(), false));
@@ -441,6 +468,12 @@ pub mod t {
     }
 
     #[bench]
+    pub fn large_reverse_sorted_mergesort_bottom_up_with_insertion(b: &mut Bencher) {
+        let a: Vec<i32> = get_sorted_vec_large().iter().rev().map(|x| *x).collect();
+        b.iter(|| mergesort::sort_bottom_up_with_insertion(&mut a.clone()));
+    }
+
+    #[bench]
     pub fn large_reverse_sorted_quicksort(b: &mut Bencher) {
         let a: Vec<i32> = get_sorted_vec_large().iter().rev().map(|x| *x).collect();
         b.iter(|| quicksort::sort(&mut a.clone(), false));
@@ -495,6 +528,12 @@ pub mod t {
     pub fn large_unsorted_mergesort_bottom_up(b: &mut Bencher) {
         let a = get_unsorted_vec_large();
         b.iter(|| mergesort::sort(&mut a.clone(), false));
+    }
+
+    #[bench]
+    pub fn large_unsorted_mergesort_bottom_up_with_insertion(b: &mut Bencher) {
+        let a = get_unsorted_vec_large();
+        b.iter(|| mergesort::sort_bottom_up_with_insertion(&mut a.clone()));
     }
 
     #[bench]

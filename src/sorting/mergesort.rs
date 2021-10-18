@@ -35,6 +35,28 @@ fn sort_bottom_up<T: Ord + Copy>(a: &mut [T], aux: &mut [T]) {
     }
 }
 
+pub fn sort_bottom_up_with_insertion<T: Ord + Default + Clone + Copy>(a: &mut [T]) {
+    fn sort<T: Ord + Copy>(a: &mut [T], aux: &mut [T]) { // bottom up, with insertion when n is sufficiently small
+        let n = a.len();
+        let mut sz = 1;
+        if n > 16 {
+            while sz < n {
+                let mut lo = 0;
+                while lo < n - sz {
+                    let hi = std::cmp::min(lo + sz + sz, n);
+                    merge(&mut a[lo..hi], &mut aux[lo..hi], sz - 1);
+                    lo = lo + sz + sz;
+                }
+                sz = sz + sz;
+            }
+        } else {
+            crate::sorting::insertion::sort(a);
+        }
+    }
+    let mut aux: Vec<T> = vec![Default::default(); a.len()];
+    sort(a, &mut aux)
+}
+
 fn sort_top_down<T: Ord + Copy>(a: &mut [T], aux: &mut [T]) {
     let n = a.len() - 1;
     // first sort a[lo .. hi]
